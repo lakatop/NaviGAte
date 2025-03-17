@@ -1,7 +1,7 @@
 #ifndef MUTATION_HPP
 #define MUTATION_HPP
 
-#include "IAgent.hpp"
+#include "../IAgent.hpp"
 
 template <typename Population>
 class IMutation
@@ -26,10 +26,11 @@ public:
         {
             auto maxAcc = agent.GetMaxAcceleration();
             auto maxDecc = agent.GetMaxDeceleration();
-            auto currentVelocity = agemt.GetVelocity();
+            Vector2D currentVelocity = agent.GetVelocity();
 
             int range = maxAcc - (-maxDecc) + 1;
             int change = rand() % range + (-maxDecc);
+            currentVelocity *= change;
         }
     }
 
