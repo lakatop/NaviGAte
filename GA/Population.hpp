@@ -3,30 +3,40 @@
 
 #include <vector>
 
-template <typename Agent>
+template <typename AgentGA>
 class Population
 {
 public:
-    Agent *begin() { return _population.begin(); }
-    const Agent *begin() const { return _population.cbegin(); }
-    Agent *end() { return _population.end(); }
-    const Agent *end() const { return _population.cend(); }
+    auto begin() { return _population.begin(); }
+    const auto begin() const { return _population.cbegin(); }
+    auto end() { return _population.end(); }
+    const auto end() const { return _population.cend(); }
 
     void Initialise(int size);
+    void Print();
 
 private:
-    std::vector<Agent> _population;
+    std::vector<AgentGA> _population;
 };
 
-template <typename Agent>
-void Population<Agent>::Initialise(int size)
+template <typename AgentGA>
+void Population<AgentGA>::Initialise(int size)
 {
     _population.reserve(size);
 
     for (int i = 0; i < size; ++i)
     {
         auto &agent = _population.emplace_back();
-        agent.Initialise();
+        agent.Initialise(10);
+    }
+}
+
+template <typename AgentGA>
+void Population<AgentGA>::Print()
+{
+    for (auto &agent : _population)
+    {
+        agent.Print();
     }
 }
 

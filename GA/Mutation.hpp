@@ -7,7 +7,7 @@ template <typename Population>
 class IMutation
 {
 public:
-    virtual ~IMutation() = 0;
+    virtual ~IMutation() {}
 
     virtual float GetMutationProbability() = 0;
 
@@ -22,16 +22,20 @@ public:
     float GetMutationProbability() override { return _mutationProbability; }
     void ModifyPopulation(Population &population) override
     {
-        for (auto &&agent : population)
+        for (auto &agent : population)
         {
+            auto &agentPath = agent.GetPath();
             auto maxAcc = agent.GetMaxAcceleration();
             auto maxDecc = agent.GetMaxDeceleration();
-            Vector2D currentVelocity = agent.GetVelocity();
-
-            int range = maxAcc - (-maxDecc) + 1;
-            int change = rand() % range + (-maxDecc);
-            currentVelocity *= change;
+            for (auto &pathSegment : agentPath)
+            {
+                int range = maxAcc - (-maxDecc) + 1;
+                int change = rand() % range + (-maxDecc);
+                pathSegment *= change;
+            }
         }
+
+        population.Print();
     }
 
 private:
