@@ -1,5 +1,5 @@
 #include "GA/Mutation.hpp"
-#include "AgentGA.hpp"
+#include "GA/AgentGA.hpp"
 #include "GA/Population.hpp"
 #include "GA/NavigationGA.hpp"
 
