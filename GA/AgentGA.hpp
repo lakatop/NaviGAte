@@ -19,16 +19,16 @@ namespace
         return dist(gen);
     }
 
-    //! Computes vector that starts where @param v1 ends, have @param size size,
-    //! and is rotated @param angle degrees relative to @param v1 direction
+    //! Computes vector that starts where v1 ends, have size,
+    //! and is rotated angle degrees relative to v1 direction
     Vector2D ComputeSubsequentVector(Vector2D &v1, double size, double angle)
     {
         double theta1 = std::atan2(v1.y, v1.x);
         double theta2 = theta1 + angle * (M_PI / 180);
 
         return {
-            .x = size * std::cos(theta2),
-            .y = size * std::sin(theta2)};
+            .x = std::round(size * std::cos(theta2) * 100) / 100,
+            .y = std::round(size * std::sin(theta2) * 100 / 100)};
     }
 }
 
@@ -77,20 +77,22 @@ void AgentGA::Initialise(int pathLength)
     // Create random steerings and accelerations
     for (int i = 0; i < pathLength; i++)
     {
-        double acceleration = (_maxAcceleration - _maxDeceleration) * NextRandom() + _maxDeceleration;
-        double steering = (_maxSteering * 2) * NextRandom() + _maxSteering;
+        double acceleration = (_maxAcceleration + _maxDeceleration) * NextRandom() - _maxDeceleration;
+        double steering = (_maxSteering * 2 * NextRandom()) - _maxSteering;
         _accelerations.push_back(acceleration);
         _steerings.push_back(steering);
     }
 
     // Construct path
     auto speed = _velocity.Size();
+    auto segment = _velocity;
     for (int i = 0; i < pathLength; ++i)
     {
         const auto newSpeed = std::clamp(speed + _accelerations[i], 0., _maxSpeed);
-        const auto nextSegment = ComputeSubsequentVector(_velocity, newSpeed, _steerings[i]);
+        const auto nextSegment = ComputeSubsequentVector(segment, newSpeed, _steerings[i]);
         _path.push_back(nextSegment);
         speed = newSpeed;
+        segment = nextSegment;
     }
 }
 
