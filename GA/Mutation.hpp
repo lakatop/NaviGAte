@@ -2,6 +2,7 @@
 #define MUTATION_HPP
 
 #include "../IAgent.hpp"
+#include "../Utils/Utils.hpp"
 
 template <typename Population>
 class IMutation
@@ -24,18 +25,15 @@ public:
     {
         for (auto &agent : population)
         {
-            auto &agentPath = agent.GetPath();
             auto maxAcc = agent.GetMaxAcceleration();
             auto maxDecc = agent.GetMaxDeceleration();
-            for (auto &pathSegment : agentPath)
+            auto &accelerations = agent.GetAccelerations();
+            for (int i = 0; i < accelerations.size(); ++i)
             {
-                int range = maxAcc - (-maxDecc) + 1;
-                int change = rand() % range + (-maxDecc);
-                pathSegment *= change;
+                double newAcceleration = (maxAcc + maxDecc) * Utils::NextRandom() - maxDecc;
+                accelerations[i] = newAcceleration;
             }
         }
-
-        population.Print();
     }
 
 private:

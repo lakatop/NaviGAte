@@ -12,6 +12,17 @@ extern "C"
             return *this;
         }
 
+        constexpr Vector2D Normalized()
+        {
+            const double size = std::sqrt((x * x) + (y * y));
+            return {x / size, y / size};
+        }
+
+        constexpr double Size()
+        {
+            return std::sqrt((x * x) + (y * y));
+        }
+
         double x;
         double y;
     };

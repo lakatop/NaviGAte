@@ -1,5 +1,5 @@
-#ifndef BASEAGENT_HPP
-#define BASEAGENT_HPP
+#ifndef I_AGENT_HPP
+#define I_AGENT_HPP
 
 #include <utility>
 
@@ -16,6 +16,8 @@ public:
     virtual void SetMaxAcceleration(double acceleration) = 0;
     virtual double GetMaxDeceleration() = 0;
     virtual void SetMaxDeceleration(double deceleration) = 0;
+    virtual double GetMaxSteering() = 0;
+    virtual void SetMaxSteering(double steering) = 0;
 };
 
-#endif // BASEAGENT_HPP
+#endif // I_AGENT_HPP

@@ -1,5 +1,5 @@
 #include "Population.hpp"
-#include "../AgentGA.hpp"
+#include "AgentGA.hpp"
 
 class NavigateGA
 {
