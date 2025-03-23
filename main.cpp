@@ -8,11 +8,11 @@ int main()
     AgentGA a;
     a.SetVelocity({0, 1});
     a.Initialise(10);
-    // Population<AgentGA> pop;
-    // pop.Initialise(2);
+    Population<AgentGA> pop;
+    pop.Initialise(2);
 
-    // RandomVelocityMutation<Population<AgentGA>> mut;
+    RandomVelocityMutation<Population<AgentGA>> mut;
 
-    // NavigateGA nav;
-    // nav.StartGA(pop, mut, mut);
+    NavigateGA nav;
+    nav.StartGA(pop, mut, mut);
 }

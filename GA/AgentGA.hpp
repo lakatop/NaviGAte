@@ -2,23 +2,15 @@
 #define AGENT_GA_HPP
 
 #include "../IAgent.hpp"
+#include "../Utils/Utils.hpp"
 
 #include <utility>
 #include <vector>
 #include <iostream>
-#include <random>
 #include <cmath>
 
 namespace
 {
-    double NextRandom()
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_real_distribution<> dist(0, 1);
-        return dist(gen);
-    }
-
     //! Computes vector that starts where v1 ends, have size,
     //! and is rotated angle degrees relative to v1 direction
     Vector2D ComputeSubsequentVector(Vector2D &v1, double size, double angle)
@@ -58,6 +50,8 @@ public:
 
     std::vector<Vector2D> &GetPath() { return _path; }
     const std::vector<Vector2D> &GetPath() const { return _path; }
+    std::vector<double> &GetAccelerations() { return _accelerations; }
+    const std::vector<double> &GetAccelerations() const { return _accelerations; }
 
 private:
     Vector2D _velocity;
@@ -77,8 +71,8 @@ void AgentGA::Initialise(int pathLength)
     // Create random steerings and accelerations
     for (int i = 0; i < pathLength; i++)
     {
-        double acceleration = (_maxAcceleration + _maxDeceleration) * NextRandom() - _maxDeceleration;
-        double steering = (_maxSteering * 2 * NextRandom()) - _maxSteering;
+        double acceleration = (_maxAcceleration + _maxDeceleration) * Utils::NextRandom() - _maxDeceleration;
+        double steering = (_maxSteering * 2 * Utils::NextRandom()) - _maxSteering;
         _accelerations.push_back(acceleration);
         _steerings.push_back(steering);
     }
