@@ -11,8 +11,11 @@ int main()
     Population<AgentGA> pop;
     pop.Initialise(2);
 
-    RandomVelocityMutation<Population<AgentGA>> mut;
+    using popu = Population<AgentGA>;
+    using mutt = RandomVelocityMutation<popu>;
 
-    NavigateGA nav;
+    mutt mut;
+
+    NavigateGA<popu, mutt, mutt> nav;
     nav.StartGA(pop, mut, mut);
 }

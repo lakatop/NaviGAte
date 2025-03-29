@@ -32,20 +32,30 @@ public:
                 _maxDeceleration(1.5),
                 _maxSteering(30) {}
 
+    Vector2D GetVelocity() const { return _velocity; }
     Vector2D GetVelocity() { return _velocity; }
-    void SetVelocity(Vector2D velocity) { _velocity = velocity; }
+    void SetVelocity(const Vector2D &velocity) { _velocity = velocity; }
+    Vector2D GetPosition() const { return _position; }
     Vector2D GetPosition() { return _position; }
-    void SetPosition(Vector2D position) { _position = position; }
+    void SetPosition(const Vector2D &position) { _position = position; }
+    Vector2D GetDestination() const { return _destination; }
+    Vector2D GetDestination() { return _destination; }
+    void SetDestination(const Vector2D &destination) { _destination = destination; }
+    double GetMaxSpeed() const { return _maxSpeed; }
     double GetMaxSpeed() { return _maxSpeed; }
-    void SetMaxSpeed(double speed) { _maxSpeed = speed; }
+    void SetMaxSpeed(const double speed) { _maxSpeed = speed; }
+    double GetMaxAcceleration() const { return _maxAcceleration; }
     double GetMaxAcceleration() { return _maxAcceleration; }
-    void SetMaxAcceleration(double acceleration) { _maxAcceleration = acceleration; }
+    void SetMaxAcceleration(const double acceleration) { _maxAcceleration = acceleration; }
+    double GetMaxDeceleration() const { return _maxDeceleration; }
     double GetMaxDeceleration() { return _maxDeceleration; }
-    void SetMaxDeceleration(double deceleration) { _maxDeceleration = deceleration; }
+    void SetMaxDeceleration(const double deceleration) { _maxDeceleration = deceleration; }
+    double GetMaxSteering() const { return _maxSteering; }
     double GetMaxSteering() { return _maxSteering; }
-    void SetMaxSteering(double steering) { _maxSteering = steering; }
+    void SetMaxSteering(const double steering) { _maxSteering = steering; }
 
     void Initialise(int pathLenght);
+    void ConstructPath();
     void Print();
 
     std::vector<Vector2D> &GetPath() { return _path; }
@@ -56,6 +66,7 @@ public:
 private:
     Vector2D _velocity;
     Vector2D _position;
+    Vector2D _destination;
     std::vector<Vector2D> _path;
     std::vector<double> _accelerations;
     std::vector<double> _steerings;
@@ -77,10 +88,14 @@ void AgentGA::Initialise(int pathLength)
         _steerings.push_back(steering);
     }
 
-    // Construct path
+    ConstructPath();
+}
+
+void AgentGA::ConstructPath()
+{
     auto speed = _velocity.Size();
     auto segment = _velocity;
-    for (int i = 0; i < pathLength; ++i)
+    for (int i = 0; i < _path.size(); ++i)
     {
         const auto newSpeed = std::clamp(speed + _accelerations[i], 0., _maxSpeed);
         const auto nextSegment = ComputeSubsequentVector(segment, newSpeed, _steerings[i]);
