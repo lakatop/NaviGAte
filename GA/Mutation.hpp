@@ -30,6 +30,9 @@ public:
             auto &accelerations = agent.GetAccelerations();
             for (int i = 0; i < accelerations.size(); ++i)
             {
+                if (Utils::NextRandom() > _mutationProbability)
+                    continue;
+
                 double newAcceleration = (maxAcc + maxDecc) * Utils::NextRandom() - maxDecc;
                 accelerations[i] = newAcceleration;
             }
