@@ -1,21 +1,25 @@
-#include "Population.hpp"
 #include "AgentGA.hpp"
+#include "Population.hpp"
 
+template<typename Population, typename... Operators>
 class NavigateGA
 {
 public:
-    NavigateGA() {}
+  NavigateGA() {}
 
-    template <typename Population, typename... Operators>
-    void StartGA(Population &population, Operators... operators);
-    int iterations = 5;
-};
-
-template <typename Population, typename... Operators>
-void NavigateGA::StartGA(Population &population, Operators... operators)
-{
-    for (int i = 0; i < 2; i++)
-    {
-        ((operators.ModifyPopulation(population)), ...);
+  void StartGA(Population& population, Operators... operators)
+  {
+    for (int i = 0; i < iterations; i++) {
+      ((operators.ModifyPopulation(population)), ...);
     }
-}
+  }
+
+  template<typename Evaluator>
+  void EvaluatePopulation(Evaluator& evaluator)
+  {
+    evaluator.Evaluate();
+  }
+
+private:
+  int iterations = 2;
+};
