@@ -4,18 +4,16 @@ template<typename Population>
 class Evaluator
 {
 public:
-  Evaluator(Population pop) { _pop = pop; }
-
   template<typename... Fitnesses>
-  void EvaluatorFit(Fitnesses&&... fitnesses)
+  void SetFitnesses(Fitnesses&&... fitnesses)
   {
-    evaluatePop = [=]() mutable {
-      ((fitnesses.EvaluatePopulation(_pop)), ...);
+    evaluatePop = [=](Population& population) mutable {
+      ((fitnesses.EvaluatePopulation(population)), ...);
     };
   }
 
-  void Evaluate(Population& population) { evaluatePop(); }
+  void Evaluate(Population& population) { evaluatePop(population); }
 
-  std::function<void()> evaluatePop;
+  std::function<void(Population&)> evaluatePop;
   Population _pop;
 };

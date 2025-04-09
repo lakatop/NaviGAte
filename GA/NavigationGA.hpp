@@ -9,7 +9,7 @@ public:
 
   void StartGA(Population& population, Operators... operators)
   {
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < iterations; i++) {
       ((operators.ModifyPopulation(population)), ...);
     }
   }
@@ -21,5 +21,5 @@ public:
   }
 
 private:
-  int iterations = 5;
+  int iterations = 2;
 };

@@ -18,9 +18,9 @@ main()
   //   using mutt = RandomVelocityMutation<popu>;
   //   DestinationDistanceFitness<popu> fit;
   //   using ffit = DestinationDistanceFitness<popu>;
-  Evaluator<Population<AgentGA>> eva(pop);
+  Evaluator<Population<AgentGA>> eva;
   DestinationDistanceFitness<Population<AgentGA>> fit;
-  eva.EvaluatorFit(fit);
+  eva.SetFitnesses(fit);
   //   fit.EvaluatePopulation(pop);
 
   //   mutt mut;
