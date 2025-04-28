@@ -15,9 +15,9 @@ public:
   }
 
   template<typename Evaluator>
-  void EvaluatePopulation(Evaluator& evaluator)
+  void EvaluatePopulation(Evaluator& evaluator, Population& population)
   {
-    evaluator.Evaluate();
+    evaluator.Evaluate(population);
   }
 
 private:
