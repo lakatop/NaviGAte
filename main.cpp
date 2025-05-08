@@ -21,6 +21,8 @@ main()
   Evaluator<Population<AgentGA>> eva;
   DestinationDistanceFitness<Population<AgentGA>> fit;
   eva.SetFitnesses(fit);
+  eva.Evaluate(pop);
+  eva.RankPopulation({ 1, 2, 3 });
   //   fit.EvaluatePopulation(pop);
 
   //   mutt mut;

@@ -1,3 +1,24 @@
 {
-    "C_Cpp.default.compilerPath": "/usr/bin/g++"
+    "C_Cpp.default.compilerPath": "/usr/bin/g++",
+    "files.associations": {
+        "*.als": "alloy",
+        "vector": "cpp",
+        "__bit_reference": "cpp",
+        "__debug": "cpp",
+        "__split_buffer": "cpp",
+        "__tuple": "cpp",
+        "array": "cpp",
+        "atomic": "cpp",
+        "exception": "cpp",
+        "initializer_list": "cpp",
+        "iosfwd": "cpp",
+        "limits": "cpp",
+        "memory": "cpp",
+        "new": "cpp",
+        "string": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "typeinfo": "cpp",
+        "unordered_map": "cpp"
+    }
 }
