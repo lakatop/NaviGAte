@@ -17,6 +17,7 @@ public:
 
 private:
   std::vector<AgentGA> _population;
+  std::vector<double> _resultFitnesses;
 };
 
 template<typename AgentGA>

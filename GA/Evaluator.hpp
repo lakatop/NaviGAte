@@ -16,17 +16,17 @@ public:
 
   void Evaluate(Population& population) { _evaluatePop(population); }
 
-  template<typename... T>
-  void RankPopulation(Population& population, T&&... fitnessWeights)
+  void RankPopulation(std::initializer_list<double> fitnessWeights)
   {
-    Ranker ranker(this);
-    ranker.SetFitnessWeights(std::forward(fitnessWeights...));
-    ranker.RankPopulation(population);
+    Ranker ranker(*this);
+    ranker.SetFitnessWeights(fitnessWeights);
+    resultFitnesses = ranker.RankPopulation();
   }
 
 private:
   std::function<void(Population&)> _evaluatePop;
   std::vector<std::vector<double>> _fitnesses;
+  std::vector<double> resultFitnesses;
 
   class Ranker
   {
@@ -36,7 +36,7 @@ private:
     {
     }
 
-    void RankPopulation(Population& population)
+    std::vector<double> RankPopulation()
     {
       auto zScoreNormalize = [](const auto& fitnessValues) {
         // Calculate things needed for z-score normalisation
@@ -51,7 +51,7 @@ private:
         double variance{ squaredSum / fitnessValues.size() };
 
         double stdDev{ std::sqrt(variance) };
-        auto normalisedFitnesses = std::vector(0, fitnessValues.size());
+        std::vector<double> normalisedFitnesses(0, fitnessValues.size());
         if (stdDev == 0)
           return normalisedFitnesses;
 
@@ -62,12 +62,30 @@ private:
 
         return normalisedFitnesses;
       };
+
+      // Normalise each fitness calculated
+      std::vector<std::vector<double>> normalisedFitnesses{};
+      for (const auto& fitnesses : _evaluator._fitnesses) {
+        normalisedFitnesses.emplace_back(zScoreNormalize(fitnesses));
+      }
+
+      // Apply weighted sum method and get resulting fitnesses
+      std::vector<double> resultFitnesses{};
+      for (int i = 0; i < normalisedFitnesses[0].size(); ++i) {
+        double fitness = 0;
+        for (int j = 0; j < normalisedFitnesses.size(); ++j) {
+          fitness += normalisedFitnesses[j][i] * _fitnessWeights[j];
+        }
+
+        resultFitnesses.push_back(fitness);
+      }
+
+      return resultFitnesses;
     }
 
-    template<typename... T>
-    void SetFitnessWeights(T&&... fitnessWeights)
+    void SetFitnessWeights(std::initializer_list<double> fitnessWeights)
     {
-      ((_fitnessWeights.emplace(fitnessWeights)), ...);
+      _fitnessWeights = fitnessWeights;
     }
 
   private:
