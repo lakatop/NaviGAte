@@ -10,8 +10,8 @@
 #include <vector>
 
 namespace {
-//! Computes vector that starts where v1 ends, have size,
-//! and is rotated angle degrees relative to v1 direction
+/// @brief Computes vector that starts where `v1` ends, have `size`,
+/// and is rotated `angle` degrees relative to `v1` direction
 Vector2D
 ComputeSubsequentVector(Vector2D& v1, double size, double angle)
 {
@@ -23,6 +23,9 @@ ComputeSubsequentVector(Vector2D& v1, double size, double angle)
 }
 }
 
+/// @brief Class representing genetic algorithm agent. It implements base Agent
+/// interface `IAgent`, but also has additional methods so it can be used as
+/// individual in GA
 class AgentGA : public IAgent
 {
 public:
@@ -34,6 +37,9 @@ public:
   {
   }
 
+  /*
+  Basic getters and setters for data members
+  */
   Vector2D GetVelocity() const { return _velocity; }
   Vector2D GetVelocity() { return _velocity; }
   void SetVelocity(const Vector2D& velocity) { _velocity = velocity; }
@@ -65,27 +71,47 @@ public:
   double GetMaxSteering() { return _maxSteering; }
   void SetMaxSteering(const double steering) { _maxSteering = steering; }
 
-  void Initialise(int pathLenght);
-  void ConstructPath();
-  void Print();
-
   std::vector<Vector2D>& GetPath() { return _path; }
   const std::vector<Vector2D>& GetPath() const { return _path; }
   std::vector<double>& GetAccelerations() { return _accelerations; }
   const std::vector<double>& GetAccelerations() const { return _accelerations; }
 
+  /// @brief Initialise random individual (represented as a path) with
+  /// `pathLength` lenght
+  void Initialise(int pathLenght);
+
+  /// @brief Construct a path represented as a vector of Vector2Ds from current
+  /// accelerations and steerings
+  void ConstructPath();
+
+  /// @brief Debug printing of agents path
+  void Print();
+
 private:
+  /// @brief Agents current velocity
   Vector2D _velocity;
+  /// @brief Agents current position
   Vector2D _position;
+  /// @brief Agents destination
   Vector2D _destination;
+  /// @brief Path on which Agent should move
   std::vector<Vector2D> _path;
+  /// @brief List of accelerations applied along the path
   std::vector<double> _accelerations;
+  /// @brief List of steering applied along the path
   std::vector<double> _steerings;
 
+  /// @brief Agents limiting speed - agent cannot move faster than this value
   double _maxSpeed;
+  /// @brief Agents limiting acceleration - agent cannot accelerate more
+  /// (between path segments) than this value
   double _maxAcceleration;
+  /// @brief Agents limiting deceleration - agent cannot decelerate more
+  /// (between path segments) than this value
   double _maxDeceleration;
-  double _maxSteering; // in degrees
+  /// @brief Agents limiting steering (in degrees) - agent cannot change
+  /// direction more (between path segments) than this value
+  double _maxSteering;
 };
 
 void

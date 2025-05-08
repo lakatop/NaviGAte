@@ -8,6 +8,7 @@
 class IAgent
 {
 public:
+  virtual ~IAgent() {}
   virtual Vector2D GetVelocity() = 0;
   virtual void SetVelocity(const Vector2D& velocity) = 0;
   virtual double GetMaxSpeed() = 0;
