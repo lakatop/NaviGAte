@@ -4,43 +4,53 @@
 #include "../IAgent.hpp"
 #include "../Utils/Utils.hpp"
 
-template <typename Population>
+/// @brief Base interface for mutation classes
+/// @tparam Population type of population. Mutation will be applied on this
+/// population's individuals
+template<typename Population>
 class IMutation
 {
 public:
-    virtual ~IMutation() {}
+  virtual ~IMutation() {}
 
-    virtual float GetMutationProbability() = 0;
+  /// @brief Returns probability by which this mutation happens on individual
+  virtual float GetMutationProbability() = 0;
 
-    virtual void ModifyPopulation(Population &population) = 0;
+  /// @brief Apply mutation on `population`
+  virtual void ModifyPopulation(Population& population) = 0;
 };
 
-template <typename Population>
+/// @brief Mutation is randomly changing individuals speed
+/// @tparam Population type of population
+template<typename Population>
 class RandomVelocityMutation : public IMutation<Population>
 {
 public:
-    ~RandomVelocityMutation() {};
-    float GetMutationProbability() override { return _mutationProbability; }
-    void ModifyPopulation(Population &population) override
-    {
-        for (auto &agent : population)
-        {
-            auto maxAcc = agent.GetMaxAcceleration();
-            auto maxDecc = agent.GetMaxDeceleration();
-            auto &accelerations = agent.GetAccelerations();
-            for (int i = 0; i < accelerations.size(); ++i)
-            {
-                if (Utils::NextRandom() > _mutationProbability)
-                    continue;
+  ~RandomVelocityMutation() {};
 
-                double newAcceleration = (maxAcc + maxDecc) * Utils::NextRandom() - maxDecc;
-                accelerations[i] = newAcceleration;
-            }
-        }
+  /// @brief Returns probability by which this mutation happens on individual
+  float GetMutationProbability() override { return _mutationProbability; }
+
+  /// @brief Apply mutation on `population`
+  void ModifyPopulation(Population& population) override
+  {
+    for (auto& agent : population) {
+      auto maxAcc = agent.GetMaxAcceleration();
+      auto maxDecc = agent.GetMaxDeceleration();
+      auto& accelerations = agent.GetAccelerations();
+      for (int i = 0; i < accelerations.size(); ++i) {
+        if (Utils::NextRandom() > _mutationProbability)
+          continue;
+
+        double newAcceleration =
+          (maxAcc + maxDecc) * Utils::NextRandom() - maxDecc;
+        accelerations[i] = newAcceleration;
+      }
     }
+  }
 
 private:
-    float _mutationProbability;
+  float _mutationProbability;
 };
 
 #endif // MUTATION_HPP

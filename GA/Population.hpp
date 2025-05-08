@@ -3,20 +3,31 @@
 
 #include <vector>
 
+/// @brief Class representing population used in GA
+/// @tparam AgentGA type on individuals
 template<typename AgentGA>
 class Population
 {
 public:
+  /*
+  Iterators for population
+  */
   auto begin() { return _population.begin(); }
   const auto begin() const { return _population.cbegin(); }
   auto end() { return _population.end(); }
   const auto end() const { return _population.cend(); }
 
+  /// @brief Initialise population of `size` individuals
+  /// @param size
   void Initialise(int size);
+
+  /// @brief Debug print for population
   void Print();
 
 private:
+  /// @brief Vector of individuals
   std::vector<AgentGA> _population;
+  /// @brief Resulting fitness for each individual
   std::vector<double> _resultFitnesses;
 };
 
