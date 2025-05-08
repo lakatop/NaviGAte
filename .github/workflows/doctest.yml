@@ -1,0 +1,22 @@
+name: C++ Doctest CI
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y g++ make
+      
+      - name: Compile all tests
+        run: |
+          cd Tests
+          make
+
+      - name: Run each test separately
+        run: ./tests
