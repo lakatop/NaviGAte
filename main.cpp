@@ -10,7 +10,7 @@ main()
 {
   AgentGA a;
   a.SetVelocity({ 0, 1 });
-  a.Initialise(10);
+  a.Initialise(5);
   Population<AgentGA> pop;
   pop.Initialise(2);
 

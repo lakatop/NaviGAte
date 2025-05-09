@@ -33,3 +33,6 @@
 
 # iOS debug symbols
 *.dSYM/
+
+# Tests
+Tests/tests

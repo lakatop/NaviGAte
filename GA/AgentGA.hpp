@@ -75,6 +75,7 @@ public:
   const std::vector<Vector2D>& GetPath() const { return _path; }
   std::vector<double>& GetAccelerations() { return _accelerations; }
   const std::vector<double>& GetAccelerations() const { return _accelerations; }
+  const std::vector<double>& GetSteerings() const { return _steerings; }
 
   /// @brief Initialise random individual (represented as a path) with
   /// `pathLength` lenght
@@ -82,7 +83,7 @@ public:
 
   /// @brief Construct a path represented as a vector of Vector2Ds from current
   /// accelerations and steerings
-  void ConstructPath();
+  void ConstructPath(int pathLenght);
 
   /// @brief Debug printing of agents path
   void Print();
@@ -127,15 +128,15 @@ AgentGA::Initialise(int pathLength)
     _steerings.push_back(steering);
   }
 
-  ConstructPath();
+  ConstructPath(pathLength);
 }
 
 void
-AgentGA::ConstructPath()
+AgentGA::ConstructPath(int pathLenght)
 {
   auto speed = _velocity.Size();
   auto segment = _velocity;
-  for (int i = 0; i < _path.size(); ++i) {
+  for (int i = 0; i < pathLenght; ++i) {
     const auto newSpeed = std::clamp(speed + _accelerations[i], 0., _maxSpeed);
     const auto nextSegment =
       ComputeSubsequentVector(segment, newSpeed, _steerings[i]);
